@@ -4,43 +4,53 @@ import backend.challenge.modules.task.dtos.TaskDTO;
 import backend.challenge.modules.task.models.Task;
 
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Singleton
 public class TaskRepository implements ITaskRepository {
+	private final List<Task> tasks = new ArrayList<>();
 
 	@Override
-	public Task index(final Long taskId) {
-		// TODO: Criar método responsável por retornar tarefa por id
-
-		return null;
+	public Task index(final UUID taskId) {
+		return this.tasks.stream()
+				.filter(t -> t.getId().equals(taskId))
+				.findFirst()
+				.orElse(null);
 	}
 
 	@Override
 	public List<Task> show() {
-		// TODO: Criar método responsável por retornar todas as tarefas
-
-		return null;
+		return new ArrayList<>(this.tasks);
 	}
 
 	@Override
 	public Task create(final TaskDTO taskDTO) {
-		// TODO: Criar método responsável por criar uma tarefa
+		Task newTask = new Task();
+		newTask.setTitle(taskDTO.getTitle());
+		newTask.setDescription(taskDTO.getDescription());
 
-		return null;
+		this.tasks.add(newTask);
+
+		return newTask;
 	}
 
 	@Override
 	public Task update(final Task task) {
-		// TODO: Criar método responsável por atualizar uma tarefa
+		tasks.stream()
+				.filter(existingTask -> existingTask.getId().equals(task.getId()))
+				.findFirst()
+				.ifPresent(existingTask -> {
+					existingTask.setTitle(task.getTitle());
+					existingTask.setDescription(task.getDescription());
+				});
 
-		return null;
+		return task;
 	}
 
 	@Override
-	public void delete(final Long taskId) {
- 		// TODO: Criar método responsável por deletar tarefa por id
-
+	public void delete(UUID taskId) {
+		this.tasks.removeIf(task -> task.getId().equals(taskId));
 	}
-
 }

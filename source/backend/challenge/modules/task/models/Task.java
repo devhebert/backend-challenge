@@ -1,23 +1,25 @@
 package backend.challenge.modules.task.models;
 
 import backend.challenge.modules.task.enums.TaskStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.UUID;
+
+import static backend.challenge.modules.task.enums.TaskStatus.PROGRESS;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
-
-	private Long id;
+	private UUID id = UUID.randomUUID();
 	private String title;
 	private String description;
-	private int progress;
-	private TaskStatus status;
-	private Date createdAt;
+	private int progress = 0;
+	private TaskStatus status = PROGRESS;
+	private Date createdAt = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
 }

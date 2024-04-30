@@ -18,10 +18,14 @@ public class RetrieveAllTasksService implements IRetrieveAllTasksService {
 	}
 
 	@Override
-	public List<Task> execute() {
-		// TODO: Criar serviço responsável por recuperar todas as tarefas
+	public OutputPort execute() {
+		try {
+			List<Task> tasks = this.taskRepository.show();
+			return new OutputPort.Ok(tasks);
+		} catch (Exception e) {
+			return new OutputPort.Error(e.getMessage());
+		}
 
-		return null;
 	}
 
 }
